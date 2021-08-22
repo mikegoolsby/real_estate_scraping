@@ -8,6 +8,7 @@ def re_scrape():
     soup = BeautifulSoup(html_text, 'lxml')
     listings = soup.find_all('article', class_ = 'list-card list-card-additional-attribution list-card_not-saved')
 
+
     for index, listing in enumerate(listings):
         address = listing.find('address', class_ = 'list-card-addr').text
         price = listing.find('div', class_ = 'list-card-price').text
@@ -18,11 +19,13 @@ def re_scrape():
             f.write(f'Price: {price} \n')
             f.write(f'Details: {beds} \n')
             f.write(f'More Context: {other_deets} \n')
-        print(f'File saved: {(address, index)}')
+        global last
+        last = index
 
 
 if __name__ == '__main__':
     while True:
         re_scrape()
         time_wait = 10
+        print(f'Script is running. Will wait {time_wait} minutes to run again. Saved {last + 1} listings. Good luck.')
         time.sleep(time_wait * 60)
